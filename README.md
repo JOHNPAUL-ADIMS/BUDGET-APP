@@ -14,4 +14,10 @@ This app allows the following operations from the user
   
   To start using it the client needs to deposit in money first to any of the category because every category is at zero as shown in the image below.
   ![image](https://user-images.githubusercontent.com/57724518/114316388-31542900-9afb-11eb-9159-dec5ea53f685.png)
+  
+  
+  Note: You can contribute to this app.
+  
+  
+  
  
