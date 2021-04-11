@@ -19,7 +19,7 @@ class Budget:
     #This  contains a database for storing the information of the clients
     """
 
-    database = {'food': 2000, 'clothing': 1000, 'entertainment': 3000}
+    database = {'food': 0, 'clothing': 0, 'entertainment': 0}
 
     def __init__(self):
 
@@ -30,41 +30,48 @@ class Budget:
 
 # Building of the welcoming page in the app.add()
 
+    # creating an input to make deposit to the database.add()
+    # 
 
+    
+     
     def displayCurrentBudget(self):
 
+        # print(''.center(50, '*') + '\n')
         print('\n\n' + 'Current Budget Status'.center(34, '=').upper() + '\n')
         # PRINTING OUT THE RESULTS FOR THE CUSTOMERS TO SEE
 
         print(f'NO\t Category \tAmount\n')
-        print(f'1.\t Food \t\t#{self.food:#,.2f}')
-        print(f'2.\t Clothing \t#{self.clothing:#,.2f}')
-        print(f'3.\t Entertainment\t#{self.entertainment:#,.2f}')
-        print(''.center(50, '*') + '\n')
+        print(f'1.\t Food \t\t#{self.food}')
+        print(f'2.\t Clothing \t#{self.clothing}')
+        print(f'3.\t Entertainment\t#{self.entertainment}')
+
 
         time.sleep(1.0)
-        return self.displayCurrentBudget
+        return self.operationSelection()
 
     def operationSelection(self):
-
+        
         print(f' \n\nWhat actions will you like to perform?\n\n'.center(
             50, '*').title())
         time.sleep(1.0)
 
         print(f'Select an Options\n')
         time.sleep(0.5)
-        print(f'1. Deposit Funds')
-        print(f'2. Withdraw Funds')
-        print(f'3. Transfer Funds')
-        print(f'4. Check Budget Balance')
-        print(f'5. Exit App\n')
-
+        print ("""
+            [1] - Deposit funds.
+            [2] - Withdraw funds.
+            [3] - Transfer funds.
+            [4] - Check budget baalance.
+            [5] - Exit App
+        """)
+       
         # Collecting my options from the users
         try:
             option = int(input("Enter your options >  "))
 
         except ValueError:
-            print(f' Invalid Option Selected. Try again ')
+            print(f' Invalid Option Selected (digit is expected). Try again ')
             return self.operationSelection()
 
         return self.choiceSelection(option)
@@ -98,7 +105,7 @@ class Budget:
 
             depositCategory = int(input(f'Enter category: >> '))
             depositAmount = int(input('Enter the amount \n #'))
-
+            # adds the amount entered to the different categories.
             if depositCategory == 1 and depositAmount > 0:
                 print(
                     f'You have deposited #{depositAmount:#,.2f} to Food Category')
@@ -193,10 +200,22 @@ class Budget:
         except ValueError:
             print(
                 "You have made an invalid selection or you have insufficient fund, Try again\n")
-            return self.deposit()
-        #This goes to check for funds. It can be improve by asking the client what next they want to do with next.add()
+            return self.displayCurrentBudget()
+    
 
-        return self.exitapp()
+
+    # This returns the account balance of the customers
+    def checkFunds(self):
+        print('\n\n' + 'Current Budget Status'.center(34, '=').upper() + '\n')
+        # PRINTING OUT THE RESULTS FOR THE CUSTOMERS TO SEE
+
+        print(f'NO\t Category \tAmount\n')
+        print(f'1.\t Food \t\t#{self.food:#,.2f}')
+        print(f'2.\t Clothing \t#{self.clothing:#,.2f}')
+        print(f'3.\t Entertainment\t#{self.entertainment:#,.2f}')
+
+        return self.operationSelection()
+
 
     def exitapp(self):
         print(f'Do you want to exit?')
@@ -209,9 +228,9 @@ class Budget:
                 exit()
 
             elif exitoption == 2:
-                return self.choiceSelection()
+                return self.displayCurrentBudget()
             else:
-                return self.exitapp()
+                return self.displayCurrentBudget()
         except ValueError:
             print('Invalid Selection. Try again')
         return self.choiceSelection()
@@ -221,9 +240,11 @@ class Budget:
 def welcomePage():
 
     print("\tMY BUDGET APP \t".center(100, '*'))
+    print(('*'*2)+"Welcome to my Budget App"+('*'*2))
+    print(('*'*2)+"See your current status"+('*'*2))
 
     budget = Budget()
-    budget.operationSelection()
+    budget.displayCurrentBudget()
 
 
 if __name__ == '__welcomePage__':
