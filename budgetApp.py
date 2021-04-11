@@ -4,7 +4,6 @@ import time
 # 		a. food
 # 		b. clothing
 # 		c. entertainment
-
 # 2. objects should allow for
 # 		a. depositing to categories
 # 		b. withdrawing from categories
@@ -47,14 +46,14 @@ class Budget:
         print(f'3.\t Entertainment\t#{self.entertainment}')
 
 
-        time.sleep(1.0)
+        time.sleep(0.5)
         return self.operationSelection()
 
     def operationSelection(self):
         
         print(f' \n\nWhat actions will you like to perform?\n\n'.center(
             50, '*').title())
-        time.sleep(1.0)
+   
 
         print(f'Select an Options\n')
         time.sleep(0.5)
@@ -99,12 +98,17 @@ class Budget:
         print("YOU ARE ABOUT TO DEPOSIT ".center(50, "="))
         print("Enter the Category you want to deposit into \n")
         print(" 1. Food\n 2. Clothing\n 3. Entertainment\n")
-        time.sleep(0.3)
+        time.sleep(0.5)
 
         try:
 
             depositCategory = int(input(f'Enter category: >> '))
             depositAmount = int(input('Enter the amount \n #'))
+        except ValueError:
+            print("You have made an invalid selection. Try again\n")
+            return self.deposit()
+
+        try:
             # adds the amount entered to the different categories.
             if depositCategory == 1 and depositAmount > 0:
                 print(
@@ -122,7 +126,8 @@ class Budget:
                     f'You have deposited #{depositAmount:#,.2f} to Entertainment Category')
 
             else:
-                print(0)
+                print("Please press from 1 to 3 at the category section")
+                return self.deposit()
         except ValueError:
             print("You have made an invalid selection. Try again\n")
             return self.deposit()
@@ -138,35 +143,45 @@ class Budget:
 
         time.sleep(0.5)
 
-        while True:
+        # while True:
 
-            try:
-                transfer_from = int(input("Enter  To Transfer From\n> "))
-                beneficiary = int(input("Enter Beneficiary Account\n> "))
+        try:
+            transfer_from = int(input("Enter  To Transfer From\n> "))
+            beneficiary = int(input("Enter Beneficiary Account\n> "))
 
-                transfer_amount = int(input("Enter Transfer Amount\n"))
+            transfer_amount = int(input("Enter Transfer Amount\n"))
+        except ValueError:
+            print("You have made an invalid selection. Try again\n")
+            return self.transfer()
 
-                if transfer_from in range(1, 4) and beneficiary in range(1, 4) and transfer_amount > 0:
+        try:
+            
 
-                    if transfer_from == beneficiary:
-                        print("You cannot transfer to the same Account. Try again\n")
-                        continue
+            if transfer_from == beneficiary:
+                print("You cannot transfer to the same Account. Try again\n")
 
-                    elif transfer_amount > Budget.database[list(Budget.database.keys())[transfer_from-1]]:
-                        print(
-                            f"You have insufficient balance in {list(Budget.database.keys())[transfer_from-1]} account")
-                        continue
 
-                    else:
-                        return self.operationSelection()
-                else:
-                    print("You have made an invalid input")
-                    continue
+            elif transfer_from != beneficiary and beneficiary ==1 and transfer_amount > 0:
+                self.food = self.food - transfer_amount
+                print(f'You have transfered #{transfer_amount:#,.2f} to Food Category')
 
-            except ValueError:
-                print("You have mada an invalid input")
-                return self.transfer(transfer_from, beneficiary, transfer_amount)
-            return self.exitapp()
+            elif transfer_from != beneficiary and beneficiary ==2 and transfer_amount > 0:
+                self.clothing -= transfer_amount
+                print(f'You have transfered #{transfer_amount:#,.2f} to Clothing Category')
+
+            elif transfer_from != beneficiary and beneficiary ==3 and transfer_amount > 0:
+                self.entertainment -= transfer_amount
+                print(f'You have transfered #{transfer_amount:#,.2f} to Entertainment Category')
+                    
+
+            else:
+                print("You have made an invalid input")
+                return self.operationSelection()
+
+        except ValueError:
+            print("You have mada an invalid input")
+            return self.transfer()
+        return self.exitapp()
 
     def withdraw(self):
 
@@ -174,12 +189,16 @@ class Budget:
         print("\nEnter the category to withdraw from\n")
         print("1. Food\n2. Clothing\n3. Entertainment\n")
 
-        time.sleep(1.0)
+        time.sleep(0.5)
         try:
 
             Withdrawal_category = int(input(f'Enter category: >> '))
             Withdrawal_amount = int(input('Enter the amount \n #'))
+        except ValueError:
+            print("You have made an invalid selection. Try again\n")
+            return self.withdraw()
 
+        try:
             if Withdrawal_category == 1 and Withdrawal_amount < self.food:
                 print(
                     f'You have withdrawn #{Withdrawal_amount:#,.2f} from Food Category')
@@ -196,11 +215,12 @@ class Budget:
                     f'You have withdrawn #{Withdrawal_amount:#,.2f} from Entertainment Category')
 
             else:
-                print(0)
+                print("Invalid selection: Try again")
+                return self.withdraw()
         except ValueError:
-            print(
-                "You have made an invalid selection or you have insufficient fund, Try again\n")
-            return self.displayCurrentBudget()
+            print("You have made an invalid selection or you have insufficient fund, Try again\n")
+            return self.withdraw()
+        return self.displayCurrentBudget()
     
 
 
@@ -208,27 +228,42 @@ class Budget:
     def checkFunds(self):
         print('\n\n' + 'Current Budget Status'.center(34, '=').upper() + '\n')
         # PRINTING OUT THE RESULTS FOR THE CUSTOMERS TO SEE
+       
 
-        print(f'NO\t Category \tAmount\n')
-        print(f'1.\t Food \t\t#{self.food:#,.2f}')
-        print(f'2.\t Clothing \t#{self.clothing:#,.2f}')
-        print(f'3.\t Entertainment\t#{self.entertainment:#,.2f}')
+        try:
+            print(f'NO\t Category \tAmount\n')
+            print(f'1.\t Food \t\t#{self.food:#,.2f}')
+            print(f'2.\t Clothing \t#{self.clothing:#,.2f}')
+            print(f'3.\t Entertainment\t#{self.entertainment:#,.2f}')
+        except ValueError:
+            print("You have made an invalid selection. Try again\n")
+            return self.checkFunds
 
         return self.operationSelection()
 
 
     def exitapp(self):
         print(f'Do you want to exit?')
-        print(f'If Yes press 1 or No press 2')
+        print(f'If Yes press 1 or No press 2 or 3 to see your balance')
         try:
             exitoption = int(input('>>  '))
-
+            time.sleep(0.5)
+        except ValueError:
+            print("You have made an invalid selection. Try again\n")
+            return self.exitapp()
+        try:
+        
             if exitoption == 1:
                 print("We will love to see you back")
                 exit()
 
             elif exitoption == 2:
                 return self.displayCurrentBudget()
+
+            elif exitoption == 3:
+                return self.displayCurrentBudget()
+
+                
             else:
                 return self.displayCurrentBudget()
         except ValueError:
