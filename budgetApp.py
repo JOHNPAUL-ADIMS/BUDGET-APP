@@ -128,6 +128,7 @@ class Budget:
             else:
                 print("Please press from 1 to 3 at the category section")
                 return self.deposit()
+            
         except ValueError:
             print("You have made an invalid selection. Try again\n")
             return self.deposit()
@@ -142,9 +143,7 @@ class Budget:
         print("1. Food\n2. Clothing\n3. Entertainment\n")
 
         time.sleep(0.5)
-
         # while True:
-
         try:
             transfer_from = int(input("Enter  To Transfer From\n> "))
             beneficiary = int(input("Enter Beneficiary Account\n> "))
@@ -162,17 +161,32 @@ class Budget:
 
 
             elif transfer_from != beneficiary and beneficiary ==1 and transfer_amount > 0:
-                self.food = self.food - transfer_amount
+                self.food += transfer_amount
+                deposit = self.food
+                self.food -= deposit - transfer_amount
+
                 print(f'You have transfered #{transfer_amount:#,.2f} to Food Category')
 
             elif transfer_from != beneficiary and beneficiary ==2 and transfer_amount > 0:
-                self.clothing -= transfer_amount
+                self.clothing += transfer_amount
                 print(f'You have transfered #{transfer_amount:#,.2f} to Clothing Category')
 
             elif transfer_from != beneficiary and beneficiary ==3 and transfer_amount > 0:
-                self.entertainment -= transfer_amount
+                self.entertainment += transfer_amount
                 print(f'You have transfered #{transfer_amount:#,.2f} to Entertainment Category')
                     
+            else:
+                print("You have made an invalid input")
+                return self.operationSelection()
+            # Removing the transfer from the budget
+            if transfer_from == 1:
+                self.food -= transfer_amount
+
+            elif transfer_from == 2:
+                self.clothing -= transfer_amount
+
+            elif transfer_from == 3:
+                self.entertainment -= transfer_amount
 
             else:
                 print("You have made an invalid input")
